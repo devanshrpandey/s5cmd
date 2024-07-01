@@ -1337,7 +1337,7 @@ func newCustomRetryer(maxRetries int) *customRetryer {
 // ShouldRetry overrides SDK's built in DefaultRetryer, adding custom retry
 // logics that are not included in the SDK.
 func (c *customRetryer) ShouldRetry(req *request.Request) bool {
-	shouldRetry := errHasCode(req.Error, "InternalError") || errHasCode(req.Error, "RequestTimeTooSkewed") || errHasCode(req.Error, "SlowDown") || strings.Contains(req.Error.Error(), "connection reset") || strings.Contains(req.Error.Error(), "connection timed out")
+	shouldRetry := errHasCode(req.Error, "InternalError") || errHasCode(req.Error, "RequestTimeTooSkewed") || errHasCode(req.Error, "SlowDown") || strings.Contains(req.Error.Error(), "connection reset") || strings.Contains(req.Error.Error(), "connection timed out") || req.HTTPResponse.StatusCode == 403
 	if !shouldRetry {
 		shouldRetry = c.DefaultRetryer.ShouldRetry(req)
 	}
@@ -1351,6 +1351,10 @@ func (c *customRetryer) ShouldRetry(req *request.Request) bool {
 		err := fmt.Errorf("retryable error: %v", req.Error)
 		msg := log.DebugMessage{Err: err.Error()}
 		log.Debug(msg)
+	}
+
+	if req.HTTPResponse.StatusCode == 403 {
+		fmt.Println("403 error. Retrying because these errors are sometimes transient on Cloudflare R2. Check the credentials you're using if this error is the first thing you see.")
 	}
 
 	return shouldRetry
