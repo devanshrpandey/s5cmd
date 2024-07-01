@@ -1,4 +1,4 @@
-module github.com/peak/s5cmd/v2
+module github.com/devanshrpandey/s5cmd
 
 go 1.19
 
