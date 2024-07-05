@@ -3,13 +3,13 @@ module github.com/peak/s5cmd/v2
 go 1.19
 
 require (
-	github.com/aws/aws-sdk-go v1.44.256
+	github.com/aws/aws-sdk-go v1.44.298
 	github.com/cheggaaa/pb/v3 v3.1.4
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.9
 	github.com/hashicorp/go-multierror v1.1.1
 	github.com/iancoleman/strcase v0.0.0-20191112232945-16388991a334
-	github.com/igungor/gofakes3 v0.0.15
+	github.com/igungor/gofakes3 v0.0.16
 	github.com/karrick/godirwalk v1.15.3
 	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51
 	github.com/lanrat/extsort v1.0.0
