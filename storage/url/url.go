@@ -365,7 +365,7 @@ func (u *URL) String() string {
 }
 
 // MarshalJSON is the json.Marshaler implementation of URL.
-func (u *URL) MarshalJSON() ([]byte, error) {
+func (u URL) MarshalJSON() ([]byte, error) {
 	return json.Marshal(u.String())
 }
 
@@ -397,6 +397,10 @@ func FromBytes(data []byte) extsort.SortType {
 // IsWildcard reports whether if a string contains any wildcard chars.
 func (u *URL) IsWildcard() bool {
 	return !u.raw && hasGlobCharacter(u.Path)
+}
+
+func (u *URL) IsRaw() bool {
+	return u.raw
 }
 
 // parseBatch parses keys for wildcard operations.
@@ -460,7 +464,8 @@ func (u *URL) EscapedPath() string {
 	for i, element := range sourceKeyElements {
 		sourceKeyElements[i] = url.QueryEscape(element)
 	}
-	return strings.Join(sourceKeyElements, "/")
+
+	return strings.Join(sourceKeyElements, "/") // nosem - silence semgrep's "use path.Join" error
 }
 
 // check if all fields of URL equal
